@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOZO PROFILER</title>
+    <style>
+        body{background-color: #323232; color:#fff; font-family: Arial; font-weight: bold; text-align: center;}
+        div.console{background-color: #222; width: 50%; height: 384px; border-radius: 12px; justify-content: center; transform: translateX(50%)}
+        div.console p{text-align: left; font-family: monospace; font-weight: normal; margin-left: 8px; padding-top: 4px}
+        button{font-size: 64px; font-weight: bold; border-radius: 8px; padding: 14px 24px; border: none; background: #f00; color: #fff;}
+        button:active{background-color: #ee0000;}
+    </style>
+    <script src="jquery.min.js"></script>
+    <script>
+        function start() {
+            $.ajax("/start", {
+                statusCode: {
+                    420: function(response) {
+                        location.reload();
+                    }
+                }
+            })
+        }
+        $.get("/time?time=" + Math.floor(new Date().getTime()));
+        setInterval(() => {
+            $.get("/logs", function(data) {
+                $("#logs").text(data);
+            });
+        }, 1000);
+    </script>
+</head>
+<body>
+    <h1 style="font-size: 128px; margin-bottom: 0;">BOZO</h1>
+    <button onclick="start()">LAUNCH</button>
+    <div class="console">
+        <p id="logs"></p>
+    </div>
+</body>
+</html>
